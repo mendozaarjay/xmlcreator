@@ -104,7 +104,7 @@ namespace XmlCreator
         {
             SalesServices services = new SalesServices();
             var dt = new DataTable();
-            var name = "sales_preeod_" + tenantid + "_" + terminal + "_" + services.GetZCounter(terminal,connectionString) + ".xml";
+            var name = "sales_" + tenantid + "_" + terminal + "_" + services.GetZCounter(terminal,connectionString) + ".xml";
             var filename = Path.Combine(filepath, name);
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
