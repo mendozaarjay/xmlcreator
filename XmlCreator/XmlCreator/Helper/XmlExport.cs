@@ -100,11 +100,11 @@ namespace XmlCreator
                 xml.Flush();
             }
         }
-        public static void ExportEndOfDay(string filepath,string key, string tenantid, string terminal,string zreadingid, string connectionString)
+        public static void ExportEndOfDay(string filepath,string key, string tenantid, string terminal,string zreadingid, string connectionString, string gateid)
         {
             SalesServices services = new SalesServices();
             var dt = new DataTable();
-            var name = "sales_" + tenantid + "_" + terminal + "_" + services.GetZCounter(terminal,connectionString) + ".xml";
+            var name = "sales_" + tenantid + "_" + terminal + "_" + services.GetZCounter(gateid,connectionString) + ".xml";
             var filename = Path.Combine(filepath, name);
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
@@ -112,7 +112,7 @@ namespace XmlCreator
             settings.CloseOutput = true;
             settings.OmitXmlDeclaration = true;
 
-            var items = services.GetEndOfDays(terminal, zreadingid, connectionString);
+            var items = services.GetEndOfDays(gateid, zreadingid, connectionString);
             var header = items.FirstOrDefault();
 
             using(XmlWriter xml = XmlWriter.Create(filename, settings))
