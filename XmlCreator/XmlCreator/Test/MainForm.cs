@@ -118,7 +118,7 @@ namespace XmlCreator
                 var terminal = dgEOD[dtlTerminalId.Index, e.RowIndex].Value.ToString();
                 if(isValidEntry())
                 {
-                    XmlExport.ExportEndOfDay(txtPath.Text, txtKey.Text, txtTenantId.Text, terminal, id, Properties.Settings.Default.UserConnectionString);
+                    XmlExport.ExportEndOfDay(txtPath.Text, txtKey.Text, txtTenantId.Text, terminal, id, Properties.Settings.Default.UserConnectionString,terminal);
                     MessageBox.Show("Process has been successfully completed.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }

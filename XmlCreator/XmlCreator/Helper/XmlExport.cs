@@ -28,14 +28,17 @@ namespace XmlCreator
             using(XmlWriter xml = XmlWriter.Create(filename, settings))
             {
                 xml.WriteStartElement("root");
+                #region ID
                 xml.WriteStartElement("id");
                 xml.WriteElementString("tenantid", tenantid);
                 xml.WriteElementString("key", key);
                 xml.WriteElementString("tmid", terminal);
                 xml.WriteElementString("doc", "SALES_PREEOD");
-                xml.WriteFullEndElement();
+                xml.WriteFullEndElement(); 
+                #endregion
                 xml.WriteStartElement("sales");
                 xml.WriteElementString("date", item.Date.ToString("yyyyMMdd"));
+
                 xml.WriteStartElement("trx");
                 xml.WriteElementString("receiptno", item.ORNumber);
                 xml.WriteElementString("void", item.Void);
@@ -118,12 +121,16 @@ namespace XmlCreator
             using(XmlWriter xml = XmlWriter.Create(filename, settings))
             {
                 xml.WriteStartElement("root"); //root
+                #region ID
                 xml.WriteStartElement("id"); //root
                 xml.WriteElementString("tenantid", tenantid);
                 xml.WriteElementString("key", key);
                 xml.WriteElementString("tmid", terminal);
                 xml.WriteElementString("doc", "SALES_EOD");
-                xml.WriteFullEndElement(); //id
+                xml.WriteFullEndElement(); //id 
+                #endregion
+                #region Sales
+
                 xml.WriteStartElement("sales"); //root
                 xml.WriteElementString("date", header.Date.ToString("yyyyMMdd"));
                 xml.WriteElementString("zcounter", header.Count);
@@ -137,11 +144,12 @@ namespace XmlCreator
                 xml.WriteElementString("newnotaxsale", header.NewNoTaxSale);
                 xml.WriteElementString("opentime", header.OpenTime.ToString("yyyyMMddhhmmss"));
                 xml.WriteElementString("closetime", header.CloseTime.ToString("yyyyMMddhhmmss"));
+                xml.WriteElementString("gross", header.Gross);
                 xml.WriteElementString("vat", header.Vat);
                 xml.WriteElementString("localtax", header.LocalTax);
                 xml.WriteElementString("amusement", header.Amusement);
                 xml.WriteElementString("ewt", header.Ewt);
-                xml.WriteElementString("taxsale", header.TaxSale);
+                xml.WriteElementString("taxsale", header.Gross);
                 xml.WriteElementString("notaxsale", header.NoTaxSale);
                 xml.WriteElementString("zerosale", header.ZeroSale);
                 xml.WriteElementString("vatexempt", header.VatExempt);
@@ -172,8 +180,8 @@ namespace XmlCreator
                 xml.WriteElementString("giftcheckcnt", header.GiftCheckCount);
                 xml.WriteElementString("othertender", header.OtherTender);
                 xml.WriteElementString("othertendercnt", header.OtherTenderCount);
-
-                foreach(var item in items)
+                #region TRX
+                foreach (var item in items)
                 {
                     xml.WriteStartElement("trx"); //transactions
                     xml.WriteElementString("receiptno", item.trxReceiptNo);
@@ -191,6 +199,7 @@ namespace XmlCreator
                     xml.WriteElementString("subtotal", item.trxSubtotal);
                     xml.WriteElementString("disc", item.trxDiscount);
                     xml.WriteElementString("senior", item.trxSenior);
+                    xml.WriteElementString("pwd", item.trxPwd);
                     xml.WriteElementString("diplomat", item.trxDiplomat);
                     xml.WriteElementString("vat", item.trxVat);
                     xml.WriteElementString("exvat", item.trxExVat);
@@ -199,7 +208,7 @@ namespace XmlCreator
                     xml.WriteElementString("amusement", item.trxAmusement);
                     xml.WriteElementString("ewt", item.trxEwt);
                     xml.WriteElementString("service", item.trxService);
-                    xml.WriteElementString("taxsale", item.trxTaxSale);
+                    xml.WriteElementString("taxsale", item.trxGross);
                     xml.WriteElementString("notaxsale", item.trxNoTaxSale);
                     xml.WriteElementString("taxexsale", item.trxTaxExSale);
                     xml.WriteElementString("taxincsale", item.trxTaxIncSale);
@@ -213,6 +222,8 @@ namespace XmlCreator
                     xml.WriteElementString("qty", item.trxQuantity);
                     xml.WriteElementString("created", item.trxCreated);
                     xml.WriteElementString("memo", " ");
+
+                    #region Line
                     xml.WriteStartElement("line"); //line
                     xml.WriteElementString("sku", item.lSKU);
                     xml.WriteElementString("qty", item.lQuantity);
@@ -227,10 +238,16 @@ namespace XmlCreator
                     xml.WriteElementString("total", item.lTotal);
                     xml.WriteElementString("choicetype", " ");
                     xml.WriteFullEndElement(); //line
+                    #endregion
+
                     xml.WriteFullEndElement(); //transactions
                 }
-
+                #endregion
+                xml.WriteFullEndElement();
+                #endregion
+                #region Master
                 xml.WriteStartElement("master");
+                #region Product
                 xml.WriteStartElement("product");
                 xml.WriteElementString("sku", header.ProductSKU);
                 xml.WriteElementString("name", header.ProductName);
@@ -238,8 +255,9 @@ namespace XmlCreator
                 xml.WriteElementString("price", header.ProductPrice);
                 xml.WriteElementString("category", header.ProductCategory);
                 xml.WriteFullEndElement();
+                #endregion
                 xml.WriteFullEndElement();
-                xml.WriteFullEndElement(); //sales
+                #endregion
                 xml.WriteFullEndElement(); //root
                 xml.Flush();
             }
